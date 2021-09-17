@@ -1,0 +1,434 @@
+basePath: /v1
+definitions:
+  models.ExamPreparation:
+    properties:
+      class_type:
+        type: string
+      personal_tutor:
+        type: boolean
+      preparation_id:
+        type: string
+      profile:
+        type: string
+      study_pack:
+        type: boolean
+      training_duration:
+        type: string
+      training_type:
+        type: string
+      tutor_type:
+        type: string
+    type: object
+  models.LoginData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.RequestTutor:
+    properties:
+      exam_id:
+        type: string
+      exam_type:
+        type: string
+      gender:
+        type: string
+      student_id:
+        type: string
+    type: object
+  models.ResetPassword:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+      reset_password_link:
+        type: string
+    type: object
+  models.ResponseBody:
+    properties:
+      body:
+        type: object
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  models.StudentCurriculum:
+    properties:
+      class:
+        type: string
+      class_type:
+        type: string
+      subjject:
+        type: string
+    type: object
+  models.StudentRegistrationData:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.StudyAbroad:
+    properties:
+      address:
+        type: string
+      country_of_study:
+        type: string
+      course:
+        type: string
+      degree:
+        type: string
+      degree_level:
+        type: string
+      degree_prgramme:
+        type: string
+      dob:
+        type: string
+      educational_level:
+        type: string
+      email:
+        type: string
+      enrollement_year:
+        type: string
+      enrollment_term:
+        type: string
+      financial_status:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      graduation_year:
+        type: string
+      high_school:
+        type: string
+      last_name:
+        type: string
+      marital_status:
+        type: string
+      nationality:
+        type: string
+      phone:
+        type: string
+      study_model:
+        type: string
+      university_name:
+        type: string
+      year_of_admission:
+        type: string
+    type: object
+  models.Task:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      task:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.TutorDashboard:
+    properties:
+      students:
+        items:
+          $ref: '#/definitions/models.UserData'
+        type: array
+      task:
+        items:
+          $ref: '#/definitions/models.Task'
+        type: array
+    type: object
+  models.TutorRegistrationData:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+      tutor_type:
+        type: string
+    type: object
+  models.UserData:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      user_id:
+        type: string
+      user_type:
+        type: string
+    type: object
+host: petstore.swagger.io
+info:
+  contact:
+    email: apinaendy@gmail.com
+    name: Endy Apinageri
+  description: This is official backend documentation for the fngc software
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: FNGC Backend Service
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data of User Login objects and returns valid response
+      parameters:
+      - description: The Tutor Login Data
+        in: body
+        name: StudentData
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.LoginData'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle unique Unique User Registration
+      tags:
+      - Authorization
+  /auth/resetpassword:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data of User Reset password objects and returns valid
+        response
+      parameters:
+      - description: The User Data
+        in: body
+        name: StudentData
+        required: true
+        schema:
+          $ref: '#/definitions/models.ResetPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ResetPassword'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle resetting a user password
+      tags:
+      - Authorization
+  /auth/signup/student:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data of Student User objects and returns valid response
+      parameters:
+      - description: The Student Registration Data
+        in: body
+        name: StudentData
+        required: true
+        schema:
+          $ref: '#/definitions/models.StudentRegistrationData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.StudentRegistrationData'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle unique Student User Registration
+      tags:
+      - Authorization
+  /auth/signup/tutor:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data of Tutor User objects and returns valid response
+      parameters:
+      - description: The Tutor Registration Data
+        in: body
+        name: StudentData
+        required: true
+        schema:
+          $ref: '#/definitions/models.TutorRegistrationData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.TutorRegistrationData'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle unique Tutor User Registration
+      tags:
+      - Authorization
+  /student/curriculum/:
+    get:
+      consumes:
+      - application/json
+      description: Gets the list of all curricul courses  being taken by the student
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.StudentCurriculum'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handles getting student curriculum
+      tags:
+      - Student
+  /student/examination/:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data for examination objects and returns valid response
+      parameters:
+      - description: The Student Examination Data
+        in: body
+        name: ExaminationPreparationData
+        required: true
+        schema:
+          $ref: '#/definitions/models.ExamPreparation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ExamPreparation'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle apply for student examination
+      tags:
+      - Student
+  /student/tutor/request:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data for new tutor request
+      parameters:
+      - description: The Student Examination Data
+        in: body
+        name: RequestData
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestTutor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.RequestTutor'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle student request for new tutor
+      tags:
+      - Student
+  /tutor/dashboard/:
+    get:
+      consumes:
+      - application/json
+      description: Accept JSON data for examination objects and returns valid response
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.TutorDashboard'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle apply for student examination
+      tags:
+      - Student
+  /user/studyabroad/:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data for study details objects and returns valid response
+      parameters:
+      - description: The Task Data
+        in: body
+        name: StudyAbroadData
+        required: true
+        schema:
+          $ref: '#/definitions/models.StudyAbroad'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.StudyAbroad'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle data to process abroad study
+      tags:
+      - Hybrid APIs
+  /user/task/:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data for examination objects and returns valid response
+      parameters:
+      - description: The Task Data
+        in: body
+        name: TaskData
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle adding task for users
+      tags:
+      - Hybrid APIs
+swagger: "2.0"
