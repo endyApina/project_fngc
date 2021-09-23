@@ -4,12 +4,16 @@ definitions:
     properties:
       class_type:
         type: string
+      exam_cost:
+        type: string
+      exam_id:
+        type: string
+      exam_profile:
+        type: string
+      ezam_status:
+        type: string
       personal_tutor:
         type: boolean
-      preparation_id:
-        type: string
-      profile:
-        type: string
       study_pack:
         type: boolean
       training_duration:
@@ -17,6 +21,8 @@ definitions:
       training_type:
         type: string
       tutor_type:
+        type: string
+      user_id:
         type: string
     type: object
   models.LoginData:
@@ -62,15 +68,6 @@ definitions:
       class_type:
         type: string
       subjject:
-        type: string
-    type: object
-  models.StudentRegistrationData:
-    properties:
-      email:
-        type: string
-      full_name:
-        type: string
-      password:
         type: string
     type: object
   models.StudyAbroad:
@@ -148,19 +145,6 @@ definitions:
           $ref: '#/definitions/models.Task'
         type: array
     type: object
-  models.TutorRegistrationData:
-    properties:
-      address:
-        type: string
-      email:
-        type: string
-      full_name:
-        type: string
-      password:
-        type: string
-      tutor_type:
-        type: string
-    type: object
   models.UserData:
     properties:
       email:
@@ -170,6 +154,26 @@ definitions:
       user_id:
         type: string
       user_type:
+        type: string
+    type: object
+  models.UserRegistrationData:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+      user_type:
+        type: string
+    type: object
+  models.VerifyUser:
+    properties:
+      email:
+        type: string
+      verification_otp:
         type: string
     type: object
 host: petstore.swagger.io
@@ -207,7 +211,7 @@ paths:
           description: Check Response Message
           schema:
             $ref: '#/definitions/models.ResponseBody'
-      summary: Handle unique Unique User Registration
+      summary: Handle unique Unique User Login
       tags:
       - Authorization
   /auth/resetpassword:
@@ -237,7 +241,7 @@ paths:
       summary: Handle resetting a user password
       tags:
       - Authorization
-  /auth/signup/student:
+  /auth/signup:
     post:
       consumes:
       - application/json
@@ -248,45 +252,46 @@ paths:
         name: StudentData
         required: true
         schema:
-          $ref: '#/definitions/models.StudentRegistrationData'
+          $ref: '#/definitions/models.UserRegistrationData'
       produces:
       - application/json
       responses:
         "200":
           description: ok
           schema:
-            $ref: '#/definitions/models.StudentRegistrationData'
+            $ref: '#/definitions/models.UserRegistrationData'
         "400":
           description: Check Response Message
           schema:
             $ref: '#/definitions/models.ResponseBody'
-      summary: Handle unique Student User Registration
+      summary: Handle unique User Registration
       tags:
       - Authorization
-  /auth/signup/tutor:
+  /auth/verifyotp:
     post:
       consumes:
       - application/json
-      description: Accept JSON data of Tutor User objects and returns valid response
+      description: Accept JSON data of User Reset password objects and returns valid
+        response
       parameters:
-      - description: The Tutor Registration Data
+      - description: The User Verification Data
         in: body
         name: StudentData
         required: true
         schema:
-          $ref: '#/definitions/models.TutorRegistrationData'
+          $ref: '#/definitions/models.VerifyUser'
       produces:
       - application/json
       responses:
         "200":
           description: ok
           schema:
-            $ref: '#/definitions/models.TutorRegistrationData'
+            $ref: '#/definitions/models.VerifyUser'
         "400":
           description: Check Response Message
           schema:
             $ref: '#/definitions/models.ResponseBody'
-      summary: Handle unique Tutor User Registration
+      summary: Handle verifying user otp
       tags:
       - Authorization
   /student/curriculum/:

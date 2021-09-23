@@ -9,23 +9,28 @@ type DefaultModel struct {
 	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
 }
 
-type StudentRegistrationData struct {
-	FullName string `json:"full_name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 type LoginData struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type TutorRegistrationData struct {
-	FullName  string `json:"full_name"`
-	Email     string `json:"email"`
-	TutorType string `json:"tutor_type"`
-	Address   string `json:"address"`
-	Password  string `json:"password"`
+type User struct {
+	DefaultModel
+	FullName string `json:"full_name"`
+	Email    string `json:"email"`
+	UserType string `json:"user_type"`
+	Address  string `json:"address"`
+	Password string `json:"password"`
+	Status   string `json:"status"`
+	UserID   string `json:"user_id"`
+}
+
+type UserRegistrationData struct {
+	FullName string `json:"full_name"`
+	Email    string `json:"email"`
+	UserType string `json:"user_type"`
+	Address  string `json:"address"`
+	Password string `json:"password"`
 }
 
 type UserData struct {
@@ -36,8 +41,8 @@ type UserData struct {
 }
 
 type VerifyUser struct {
-	Email            string `json:"email"`
-	VerificationLink string `json:"verification_link"`
+	Email           string `json:"email"`
+	VerificationOTP string `json:"verification_otp"`
 }
 
 type ResetPassword struct {
@@ -53,14 +58,18 @@ type ResponseBody struct {
 }
 
 type ExamPreparation struct {
-	Profile         string `json:"profile"`
+	DefaultModel
+	ExamProfile     string `json:"exam_profile"`
 	ClassType       string `json:"class_type"`
 	TrainingType    string `json:"training_type"`
 	TrainigDuration string `json:"training_duration"`
 	StudyPack       bool   `json:"study_pack"`
 	PersonalTutor   bool   `json:"personal_tutor"`
 	TutorType       string `json:"tutor_type"`
-	PreparationID   string `json:"preparation_id"`
+	ExamID          string `json:"exam_id"`
+	StudentID       string `json:"student_id"` //logged in user unique id
+	ExamCost        string `json:"exam_cost"`
+	ExamStatus      string `json:"ezam_status"`
 }
 
 type Exam struct {
@@ -117,4 +126,31 @@ type StudyAbroad struct {
 	EnrollmentYear   string `json:"enrollement_year"`
 	StudyModel       string `json:"study_model"`
 	CountryOfStudy   string `json:"country_of_study"`
+}
+
+type LoginHistory struct {
+	DefaultModel
+	Email   string `json:"email"`
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
+type AuthToken struct {
+	TokenType string `json:"token_type"`
+	Token     string `json:"access_token"`
+	ExpiresIn int64  `json:"expires_in"`
+}
+
+type LoggedInData struct {
+	User  User      `json:"user"`
+	Token AuthToken `json:"token_data"`
+}
+
+type ContactUs struct {
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
+	Subject     string `json:"subject"`
+	Message     string `json:"message"`
 }

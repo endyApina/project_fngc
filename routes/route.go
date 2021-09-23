@@ -26,10 +26,41 @@ func SetupRouter(appPort, hostAddress string) *chi.Mux {
 	router.Use(middleware.Logger)
 
 	router.Get("/", controller.FNGCInit)
+	router.Mount("/auth", authRouter())
+	router.Mount("/user", userRouter())
+	router.Mount("/student", studentRouter())
 
 	router.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL(hostAddress+appPort+"/swagger/doc.json"),
 	))
+
+	return router
+}
+
+func authRouter() *chi.Mux {
+	router := chi.NewRouter()
+
+	router.Post("/signup", controller.Registration)
+	router.Post("/login", controller.UserLogin)
+	router.Post("/verifyotp", controller.VerifyUser)
+
+	return router
+}
+
+func userRouter() *chi.Mux {
+	router := chi.NewRouter()
+
+	router.Post("/studyabroad/", controller.StudyAbroad)
+	router.Post("/contactus/", controller.ContactUs)
+
+	return router
+}
+
+func studentRouter() *chi.Mux {
+	router := chi.NewRouter()
+
+	router.Post("/examination/", controller.ExaminationApply)
+	// router.Post()
 
 	return router
 }

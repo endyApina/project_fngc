@@ -43,7 +43,7 @@ var doc = `{
                 "tags": [
                     "Authorization"
                 ],
-                "summary": "Handle unique Unique User Registration",
+                "summary": "Handle unique Unique User Login",
                 "parameters": [
                     {
                         "description": "The Tutor Login Data",
@@ -111,7 +111,7 @@ var doc = `{
                 }
             }
         },
-        "/auth/signup/student": {
+        "/auth/signup": {
             "post": {
                 "description": "Accept JSON data of Student User objects and returns valid response",
                 "consumes": [
@@ -123,7 +123,7 @@ var doc = `{
                 "tags": [
                     "Authorization"
                 ],
-                "summary": "Handle unique Student User Registration",
+                "summary": "Handle unique User Registration",
                 "parameters": [
                     {
                         "description": "The Student Registration Data",
@@ -131,7 +131,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.StudentRegistrationData"
+                            "$ref": "#/definitions/models.UserRegistrationData"
                         }
                     }
                 ],
@@ -139,7 +139,7 @@ var doc = `{
                     "200": {
                         "description": "ok",
                         "schema": {
-                            "$ref": "#/definitions/models.StudentRegistrationData"
+                            "$ref": "#/definitions/models.UserRegistrationData"
                         }
                     },
                     "400": {
@@ -151,9 +151,9 @@ var doc = `{
                 }
             }
         },
-        "/auth/signup/tutor": {
+        "/auth/verifyotp": {
             "post": {
-                "description": "Accept JSON data of Tutor User objects and returns valid response",
+                "description": "Accept JSON data of User Reset password objects and returns valid response",
                 "consumes": [
                     "application/json"
                 ],
@@ -163,15 +163,15 @@ var doc = `{
                 "tags": [
                     "Authorization"
                 ],
-                "summary": "Handle unique Tutor User Registration",
+                "summary": "Handle verifying user otp",
                 "parameters": [
                     {
-                        "description": "The Tutor Registration Data",
+                        "description": "The User Verification Data",
                         "name": "StudentData",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.TutorRegistrationData"
+                            "$ref": "#/definitions/models.VerifyUser"
                         }
                     }
                 ],
@@ -179,7 +179,7 @@ var doc = `{
                     "200": {
                         "description": "ok",
                         "schema": {
-                            "$ref": "#/definitions/models.TutorRegistrationData"
+                            "$ref": "#/definitions/models.VerifyUser"
                         }
                     },
                     "400": {
@@ -417,14 +417,20 @@ var doc = `{
                 "class_type": {
                     "type": "string"
                 },
+                "exam_cost": {
+                    "type": "string"
+                },
+                "exam_id": {
+                    "type": "string"
+                },
+                "exam_profile": {
+                    "type": "string"
+                },
+                "ezam_status": {
+                    "type": "string"
+                },
                 "personal_tutor": {
                     "type": "boolean"
-                },
-                "preparation_id": {
-                    "type": "string"
-                },
-                "profile": {
-                    "type": "string"
                 },
                 "study_pack": {
                     "type": "boolean"
@@ -436,6 +442,9 @@ var doc = `{
                     "type": "string"
                 },
                 "tutor_type": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -506,20 +515,6 @@ var doc = `{
                     "type": "string"
                 },
                 "subjject": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.StudentRegistrationData": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 }
             }
@@ -638,7 +633,24 @@ var doc = `{
                 }
             }
         },
-        "models.TutorRegistrationData": {
+        "models.UserData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "user_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserRegistrationData": {
             "type": "object",
             "properties": {
                 "address": {
@@ -653,24 +665,18 @@ var doc = `{
                 "password": {
                     "type": "string"
                 },
-                "tutor_type": {
+                "user_type": {
                     "type": "string"
                 }
             }
         },
-        "models.UserData": {
+        "models.VerifyUser": {
             "type": "object",
             "properties": {
                 "email": {
                     "type": "string"
                 },
-                "full_name": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                },
-                "user_type": {
+                "verification_otp": {
                     "type": "string"
                 }
             }
