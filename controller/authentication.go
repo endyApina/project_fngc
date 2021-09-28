@@ -6,6 +6,9 @@ import (
 	"fngc/mailer"
 	"fngc/models"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 //Registration godoc
@@ -171,4 +174,64 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 //@Router /auth/resetpassword [post]
 func ResetPassword(w http.ResponseWriter, r *http.Request) {
 
+}
+
+//TutorRegistration godoc
+//@Summary Handle unique Tutor Registration
+//@Description Accept JSON data of Tutor Unique objects and returns valid response
+//@Accept json
+//@produce json
+//@Tags Authorization
+//@Param   TutorRegistration      body models.TutorRegistration true  "The Tutor Registration Data"
+//@Success 200 {object} models.TutorRegistration	"ok"
+//@Failure 400 {object} models.ResponseBody "Check Response Message"
+//@Router /auth/tutor/signup [post]
+func TutorRegistration(w http.ResponseWriter, r *http.Request) {
+	_ = godotenv.Load("conf.env")
+	var tutorData models.TutorRegistration
+	err := decodeJSONBody(w, r, &tutorData)
+	if err != nil {
+		var mr *malformedRequest
+		if errors.As(err, &mr) {
+			models.LogError(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
+		} else {
+			models.LogError(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+		}
+	} //decode json request into user object
+
+	var registrationData models.User
+	registrationData.FullName = tutorData.FirstName + " " + tutorData.LastName
+	registrationData.Email = tutorData.Email
+	registrationData.UserType = os.Getenv("tutor_type")
+	registrationData.Password = tutorData.Password
+
+	if err = registrationData.HandleRegistration(); err != nil {
+		models.LogError(err)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error registering new user"))
+	} //business logic to register a new user
+
+	if err = mailer.SendRegistrationMail(registrationData); err != nil {
+		models.LogError(err)
+	} //send mail notification
+
+	tutorData.TutorID = registrationData.UserID
+
+	if err = tutorData.RegisterTutor(); err != nil {
+		models.LogError(err)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error add tutor data"))
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, registrationData, "success"))
 }

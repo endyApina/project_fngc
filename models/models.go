@@ -154,3 +154,50 @@ type ContactUs struct {
 	Subject     string `json:"subject"`
 	Message     string `json:"message"`
 }
+
+type TutorRegistration struct {
+	DefaultModel
+	FirstName        string `json:"first_name"`
+	LastName         string `json:"last_name"`
+	Email            string `json:"email"`
+	Password         string `json:"password"`
+	TutorType        string `json:"tutor_type"`
+	NigerianResident bool   `json:"nigerian_resident"`
+	StateOfResidence string `json:"state_of_residence"`
+	Residence        string `json:"residence"`
+	TutorID          string `json:"tutor_id"`
+}
+
+type TutorEducationalData struct {
+	EducationalDegree []TutorDegree   `json:"educational_degree"`
+	CertifiedTeacher  bool            `json:"certified_teacher"`
+	Country           string          `json:"country"`
+	WorkExperience    TutorEmployment `json:"work_experience"`
+	Schedule          TutorSchedule   `json:"schedule"`
+	SubjectSpeciality []string        `json:"subject_speciality"`
+}
+
+type TutorSchedule struct {
+	Hours        string   `json:"hours"`
+	Weekdays     []string `json:"weekdays"`
+	Weekends     bool     `json:"weekends"`
+	WeekendHours []string `json:"weekend_hours"`
+}
+
+type TutorDegree struct {
+	DefaultModel
+	Degree  string `json:"degree"`
+	College string `json:"college"`
+	Major   string `json:"major"`
+	Year    string `json:"year"`
+	TutorID string `json:"tutor_id"`
+}
+
+type TutorEmployment struct {
+	DefaultModel
+	Employer         string `json:"employer"`
+	JobTitle         string `json:"job_title"`
+	TimeAgreement    string `json:"time_agreement"`
+	DateOfEmployment string `json:"date_of_employment"`
+	JobIndustry      string `json:"job_industry"`
+}

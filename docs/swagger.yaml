@@ -1,8 +1,27 @@
 basePath: /v1
 definitions:
+  models.ContactUs:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      message:
+        type: string
+      phone_number:
+        type: string
+      subject:
+        type: string
+    type: object
   models.ExamPreparation:
     properties:
       class_type:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
         type: string
       exam_cost:
         type: string
@@ -12,8 +31,13 @@ definitions:
         type: string
       ezam_status:
         type: string
+      id:
+        type: integer
       personal_tutor:
         type: boolean
+      student_id:
+        description: logged in user unique id
+        type: string
       study_pack:
         type: boolean
       training_duration:
@@ -22,7 +46,7 @@ definitions:
         type: string
       tutor_type:
         type: string
-      user_id:
+      updated_at:
         type: string
     type: object
   models.LoginData:
@@ -144,6 +168,35 @@ definitions:
         items:
           $ref: '#/definitions/models.Task'
         type: array
+    type: object
+  models.TutorRegistration:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      nigerian_resident:
+        type: boolean
+      password:
+        type: string
+      residence:
+        type: string
+      state_of_residence:
+        type: string
+      tutor_id:
+        type: string
+      tutor_type:
+        type: string
+      updated_at:
+        type: string
     type: object
   models.UserData:
     properties:
@@ -267,6 +320,32 @@ paths:
       summary: Handle unique User Registration
       tags:
       - Authorization
+  /auth/tutor/signup:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data of Tutor Unique objects and returns valid response
+      parameters:
+      - description: The Tutor Registration Data
+        in: body
+        name: TutorRegistration
+        required: true
+        schema:
+          $ref: '#/definitions/models.TutorRegistration'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.TutorRegistration'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle unique Tutor Registration
+      tags:
+      - Authorization
   /auth/verifyotp:
     post:
       consumes:
@@ -383,7 +462,34 @@ paths:
             $ref: '#/definitions/models.ResponseBody'
       summary: Handle apply for student examination
       tags:
-      - Student
+      - Tutor
+  /user/contactus/:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data for contact details and message objects then returns
+        valid response
+      parameters:
+      - description: The Task Data
+        in: body
+        name: ContactUs
+        required: true
+        schema:
+          $ref: '#/definitions/models.ContactUs'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ContactUs'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle contact us request
+      tags:
+      - Hybrid APIs
   /user/studyabroad/:
     post:
       consumes:

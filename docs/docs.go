@@ -151,6 +151,46 @@ var doc = `{
                 }
             }
         },
+        "/auth/tutor/signup": {
+            "post": {
+                "description": "Accept JSON data of Tutor Unique objects and returns valid response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Handle unique Tutor Registration",
+                "parameters": [
+                    {
+                        "description": "The Tutor Registration Data",
+                        "name": "TutorRegistration",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TutorRegistration"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.TutorRegistration"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/verifyotp": {
             "post": {
                 "description": "Accept JSON data of User Reset password objects and returns valid response",
@@ -310,7 +350,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Student"
+                    "Tutor"
                 ],
                 "summary": "Handle apply for student examination",
                 "responses": {
@@ -318,6 +358,46 @@ var doc = `{
                         "description": "ok",
                         "schema": {
                             "$ref": "#/definitions/models.TutorDashboard"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/contactus/": {
+            "post": {
+                "description": "Accept JSON data for contact details and message objects then returns valid response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Handle contact us request",
+                "parameters": [
+                    {
+                        "description": "The Task Data",
+                        "name": "ContactUs",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ContactUs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContactUs"
                         }
                     },
                     "400": {
@@ -411,10 +491,39 @@ var doc = `{
         }
     },
     "definitions": {
+        "models.ContactUs": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "subject": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ExamPreparation": {
             "type": "object",
             "properties": {
                 "class_type": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "exam_cost": {
@@ -429,8 +538,15 @@ var doc = `{
                 "ezam_status": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "personal_tutor": {
                     "type": "boolean"
+                },
+                "student_id": {
+                    "description": "logged in user unique id",
+                    "type": "string"
                 },
                 "study_pack": {
                     "type": "boolean"
@@ -444,7 +560,7 @@ var doc = `{
                 "tutor_type": {
                     "type": "string"
                 },
-                "user_id": {
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -630,6 +746,50 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/models.Task"
                     }
+                }
+            }
+        },
+        "models.TutorRegistration": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "nigerian_resident": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "residence": {
+                    "type": "string"
+                },
+                "state_of_residence": {
+                    "type": "string"
+                },
+                "tutor_id": {
+                    "type": "string"
+                },
+                "tutor_type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         },

@@ -133,3 +133,40 @@ func (user *User) VerifyOTP(otpBody *VerifyUser) error {
 	}
 	return nil
 }
+
+func (tutor *TutorRegistration) RegisterTutor() error {
+	_ = godotenv.Load("conf.env")
+	err := tutor.validateData()
+	if err != nil {
+		return err
+	}
+	tutor.Password = ""
+
+	if err := db.Create(&tutor).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (tutorData *TutorRegistration) validateData() error {
+	if tutorData.FirstName == "" || tutorData.LastName == "" {
+		return errors.New("empty name field")
+	}
+
+	if tutorData.Email == "" || tutorData.TutorType == "" {
+		return errors.New("empty tutor or email field")
+	}
+
+	if tutorData.NigerianResident {
+		if tutorData.StateOfResidence == "" {
+			return errors.New("unspciefied state of residence")
+		}
+	} else {
+		if tutorData.Residence == "" {
+			return errors.New("unspciefied state of residence")
+		}
+	}
+
+	return nil
+}
