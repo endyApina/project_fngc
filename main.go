@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fngc/models"
 	"fngc/routes"
 	"log"
 	"net/http"
@@ -32,5 +34,17 @@ func main() {
 	log.Println("App running on " + hostAddress + appPort)
 
 	r := routes.SetupRouter(appPort, hostAddress)
-	http.ListenAndServe(appPort, r)
+
+	if os.Getenv("app_mode") == "dev" {
+		http.ListenAndServe(appPort, r)
+	} //run app on development mode
+
+	if os.Getenv("app_mode") == "prod" {
+		HTTPSCertFile := "/etc/letsencrypt/live/www.gasnigeriaapi.com/fullchain.pem"
+		HTTPSKeyFile := "/etc/letsencrypt/live/www.gasnigeriaapi.com/privkey.pem"
+		if err := http.ListenAndServeTLS(appPort, HTTPSCertFile, HTTPSKeyFile, r); err != nil {
+			models.LogError(errors.New("error starting test-conf server"))
+			models.LogError(err)
+		}
+	} //run app on production mode
 }

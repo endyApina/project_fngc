@@ -43,6 +43,7 @@ func authRouter() *chi.Mux {
 	router.Post("/signup", controller.Registration)
 	router.Post("/login", controller.UserLogin)
 	router.Post("/verifyotp", controller.VerifyUser)
+	router.Post("/tutor/signup", controller.TutorRegistration)
 
 	return router
 }

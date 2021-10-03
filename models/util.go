@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"log"
 	"math/rand"
 	"os"
@@ -19,8 +20,8 @@ func LogError(err error) {
 	}
 }
 
-func ValidResponse(code int, body interface{}, message string) *ResponseBody {
-	var response *ResponseBody
+func ValidResponse(code int, body interface{}, message string) ResponseBody {
+	var response ResponseBody
 	response.Code = code
 	response.Message = message
 	response.Body = body
@@ -34,7 +35,7 @@ func HashPassword(password string) (string, error) {
 }
 
 func GenerateRandomString(lenght int) string {
-	var letterRunes = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789")
+	var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345678242324290")
 	b := make([]rune, lenght)
 	for i := range b {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
@@ -61,12 +62,17 @@ func checkPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func (otpBody *VerifyUser) SaveOTP(email, otp string) error {
+func (otpBody VerifyUser) SaveOTP(email, otp string) error {
 	if err := db.Where("email = ?", email).Find(&otpBody).Error; err == nil {
 		return nil
 	}
 
 	otpBody.Email = email
 	otpBody.VerificationOTP = otp
+
+	if err := db.Create(&otpBody).Error; err != nil {
+		return errors.New("error creating new otp data")
+	}
+
 	return nil
 }

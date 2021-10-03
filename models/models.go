@@ -41,6 +41,7 @@ type UserData struct {
 }
 
 type VerifyUser struct {
+	DefaultModel
 	Email           string `json:"email"`
 	VerificationOTP string `json:"verification_otp"`
 }
@@ -103,6 +104,7 @@ type TutorDashboard struct {
 }
 
 type StudyAbroad struct {
+	DefaultModel
 	FirstName        string `json:"first_name"`
 	LastName         string `json:"last_name"`
 	Phone            string `json:"phone"`

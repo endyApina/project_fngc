@@ -19,16 +19,35 @@ func SendRegistrationMail(regData models.User) error {
 	templatePath := os.Getenv("template_path") + "registration.html"
 	verificationOTP := models.GenerateRandomString(6)
 
-	var mailBody *regMailData
+	var mailBody regMailData
 	mailBody.Email = regData.Email
 	mailBody.FullName = regData.FullName
 	mailBody.VerificationCode = verificationOTP
 
-	var verify *models.VerifyUser
-	_ = verify.SaveOTP(regData.Email, verificationOTP)
+	var verify models.VerifyUser
+	err := verify.SaveOTP(regData.Email, verificationOTP)
+	if err != nil {
+		models.LogError(err)
+		return err
+	}
 
 	// _ = godotenv.Load("conf.env")
 	mailSubject := os.Getenv("mail_subject_prefix") + "Registration Successful"
+	newRequestData := NewRequest(mailBody.Email, mailSubject)
+	go newRequestData.AppSendMail(templatePath, mailBody)
+
+	return nil
+}
+
+func SendVerifiedMail(regData models.User) error {
+	templatePath := os.Getenv("template_path") + "verified.html"
+
+	var mailBody regMailData
+	mailBody.Email = regData.Email
+	mailBody.FullName = regData.FullName
+
+	// _ = godotenv.Load("conf.env")
+	mailSubject := os.Getenv("mail_subject_prefix") + "Email Verified"
 	newRequestData := NewRequest(mailBody.Email, mailSubject)
 	go newRequestData.AppSendMail(templatePath, mailBody)
 

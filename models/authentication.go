@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"log"
 	"os"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func (regData *User) HandleRegistration() error {
+func (regData User) HandleRegistration() error {
 	_ = godotenv.Load("conf.env")
 	err := regData.validateData() //validate registration data
 	if err != nil {
@@ -39,7 +40,7 @@ func (regData *User) HandleRegistration() error {
 	return nil
 }
 
-func (regData *User) validateData() error {
+func (regData User) validateData() error {
 	if regData.Email == "" {
 		return errors.New("email address cannot be empty")
 	}
@@ -61,18 +62,18 @@ func (regData *User) validateData() error {
 
 func (regData *User) verifyStatus() error {
 	_ = godotenv.Load("conf.env")
-	if regData.Status == os.Getenv("student_type") {
+	if regData.UserType == os.Getenv("student_type") {
 		return nil
 	}
 
-	if regData.Status == os.Getenv("tutor_type") {
+	if regData.UserType == os.Getenv("tutor_type") {
 		return nil
 	}
 
 	return errors.New("invalid user type")
 }
 
-func (user *User) Login(loginData *LoginData) error {
+func (user User) Login(loginData LoginData) error {
 	_ = godotenv.Load("conf.env")
 	if loginData.Email == "" {
 		return errors.New("empty email string")
@@ -95,8 +96,7 @@ func (user *User) Login(loginData *LoginData) error {
 		updateLoginAttempt(loginAttempt, "failed", "invalid login credentials")
 		return errors.New("invalid login credentials")
 	}
-
-	if user.Status == os.Getenv("unverified") {
+	if user.Status == os.Getenv("unverified_status") {
 		return errors.New("unverified user")
 	}
 
@@ -126,11 +126,29 @@ func (authData *AuthToken) GenerateTokenString(email string) error {
 	return nil
 }
 
-func (user *User) VerifyOTP(otpBody *VerifyUser) error {
-	if err := db.Where("email = ? && verification_otp = ?", otpBody.Email, otpBody.VerificationOTP).Find(&VerifyUser{}).Error; err != nil {
+func (user *User) VerifyOTP(otpBody VerifyUser) error {
+	if err := db.Where("email = ? AND verification_otp = ?", otpBody.Email, otpBody.VerificationOTP).Find(&VerifyUser{}).Error; err != nil {
 		LogError(err)
 		return errors.New("invalid otp verfication code")
 	}
+	db.Delete(&otpBody)
+	if err := db.Where("email = ?", otpBody.Email).Find(&user).Error; err != nil {
+		errM := errors.New("error finding user obejct")
+		LogError(errM)
+		return errM
+	}
+	log.Println(user)
+	if user.Email == "" {
+		LogError(errors.New("error getting user data when updating"))
+		return errors.New("error getting user data when updating")
+	}
+
+	verified := os.Getenv("verified_status")
+	if err := db.Model(&User{}).Where("email = ?", otpBody.Email).Update("status", verified).Error; err != nil {
+		LogError(err)
+		return errors.New("error verifying user data")
+	}
+
 	return nil
 }
 

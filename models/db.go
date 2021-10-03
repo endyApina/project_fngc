@@ -6,13 +6,14 @@ import (
 	"os"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres" //postgres driver
 	"github.com/joho/godotenv"
 )
 
 var db *gorm.DB
 
 func init() {
-	fmt.Println("Attempting to connect to 'firi' database...")
+	fmt.Println("Attempting to connect to database...")
 	err := godotenv.Load("conf.env")
 	if err != nil {
 		LogError(errors.New("error accessing config file"))
@@ -31,7 +32,17 @@ func init() {
 
 	db = conn
 	fmt.Println("Core database connection successful")
-	// autoMigrateTables()
+	autoMigrateTables()
+}
+
+func autoMigrateTables() {
+	db.AutoMigrate(&TutorRegistration{})
+	db.AutoMigrate(&User{})
+	db.AutoMigrate(&ExamPreparation{})
+	db.AutoMigrate(&Exam{})
+	db.AutoMigrate(&StudyAbroad{})
+	db.AutoMigrate(&LoginHistory{})
+	db.AutoMigrate(&VerifyUser{})
 }
 
 func getDatabaseCredentials() (string, string, string, string, error) {

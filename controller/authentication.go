@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fngc/mailer"
 	"fngc/models"
+	"log"
 	"net/http"
 	"os"
 
@@ -67,8 +68,8 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /auth/login [post]
 func UserLogin(w http.ResponseWriter, r *http.Request) {
-	var loginData *models.LoginData
-	var loggedIn *models.LoggedInData
+	var loginData models.LoginData
+	var loggedIn models.LoggedInData
 
 	err := decodeJSONBody(w, r, &loginData)
 	if err != nil {
@@ -78,24 +79,29 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
+			return
 		} else {
 			models.LogError(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+			return
 		}
 	} //decode json request into user object
 
 	if err = loggedIn.User.Login(loginData); err != nil {
 		models.LogError(err)
 		if err.Error() == "unverified user" {
+			log.Println("unverified")
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error"))
+			return
 		} else {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusBadRequest, err.Error(), "error"))
+			return
 		}
 	}
 
@@ -106,6 +112,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error"))
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -124,8 +131,8 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /auth/verifyotp [post]
 func VerifyUser(w http.ResponseWriter, r *http.Request) {
-	var loggedInData *models.LoggedInData
-	var otpBody *models.VerifyUser
+	var loggedInData models.LoggedInData
+	var otpBody models.VerifyUser
 	err := decodeJSONBody(w, r, &otpBody)
 	if err != nil {
 		var mr *malformedRequest
@@ -134,26 +141,38 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
+			return
 		} else {
 			models.LogError(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+			return
 		}
 	}
 
-	if err = loggedInData.User.VerifyOTP(otpBody); err != nil {
+	err = loggedInData.User.VerifyOTP(otpBody)
+	if err != nil {
 		models.LogError(err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error"))
+		return
 	}
+
+	loggedInData.User.Password = ""
+
+	err = mailer.SendVerifiedMail(loggedInData.User)
+	if err != nil {
+		models.LogError(err)
+	} //send mail notification
 
 	if err = loggedInData.Token.GenerateTokenString(otpBody.Email); err != nil {
 		models.LogError(err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error"))
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -202,33 +221,40 @@ func TutorRegistration(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+			return
 		}
 	} //decode json request into user object
 
 	var registrationData models.User
 	registrationData.FullName = tutorData.FirstName + " " + tutorData.LastName
 	registrationData.Email = tutorData.Email
-	registrationData.UserType = os.Getenv("tutor_type")
+	tutorType := os.Getenv("tutor_type")
+	registrationData.UserType = tutorType
 	registrationData.Password = tutorData.Password
 
-	if err = registrationData.HandleRegistration(); err != nil {
+	err = registrationData.HandleRegistration()
+	if err != nil {
 		models.LogError(err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error registering new user"))
+		return
 	} //business logic to register a new user
 
-	if err = mailer.SendRegistrationMail(registrationData); err != nil {
+	err = mailer.SendRegistrationMail(registrationData)
+	if err != nil {
 		models.LogError(err)
 	} //send mail notification
 
 	tutorData.TutorID = registrationData.UserID
 
-	if err = tutorData.RegisterTutor(); err != nil {
+	err = tutorData.RegisterTutor()
+	if err != nil {
 		models.LogError(err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error add tutor data"))
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
