@@ -2,10 +2,16 @@ basePath: /v1
 definitions:
   models.ContactUs:
     properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
       email:
         type: string
       first_name:
         type: string
+      id:
+        type: integer
       last_name:
         type: string
       message:
@@ -13,6 +19,8 @@ definitions:
       phone_number:
         type: string
       subject:
+        type: string
+      updated_at:
         type: string
     type: object
   models.ExamPreparation:
@@ -29,7 +37,7 @@ definitions:
         type: string
       exam_profile:
         type: string
-      ezam_status:
+      exam_status:
         type: string
       id:
         type: integer
@@ -85,6 +93,23 @@ definitions:
       message:
         type: string
     type: object
+  models.Review:
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      review:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.StudentCurriculum:
     properties:
       class:
@@ -102,11 +127,15 @@ definitions:
         type: string
       course:
         type: string
+      created_at:
+        type: string
       degree:
         type: string
       degree_level:
         type: string
       degree_prgramme:
+        type: string
+      deleted_at:
         type: string
       dob:
         type: string
@@ -128,6 +157,8 @@ definitions:
         type: string
       high_school:
         type: string
+      id:
+        type: integer
       last_name:
         type: string
       marital_status:
@@ -139,6 +170,8 @@ definitions:
       study_model:
         type: string
       university_name:
+        type: string
+      updated_at:
         type: string
       year_of_admission:
         type: string
@@ -169,6 +202,73 @@ definitions:
           $ref: '#/definitions/models.Task'
         type: array
     type: object
+  models.TutorDegree:
+    properties:
+      college:
+        type: string
+      created_at:
+        type: string
+      degree:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      major:
+        type: string
+      tutor_id:
+        type: string
+      updated_at:
+        type: string
+      year:
+        type: string
+    type: object
+  models.TutorEducationalData:
+    properties:
+      certified_teacher:
+        type: boolean
+      country:
+        type: string
+      educational_degree:
+        items:
+          $ref: '#/definitions/models.TutorDegree'
+        type: array
+      schedule:
+        $ref: '#/definitions/models.TutorSchedule'
+      subject_speciality:
+        items:
+          type: string
+        type: array
+      tutor_id:
+        type: string
+      work_experience:
+        items:
+          $ref: '#/definitions/models.TutorEmployment'
+        type: array
+    type: object
+  models.TutorEmployment:
+    properties:
+      created_at:
+        type: string
+      date_of_employment:
+        type: string
+      deleted_at:
+        type: string
+      employer:
+        type: string
+      id:
+        type: integer
+      job_industry:
+        type: string
+      job_title:
+        type: string
+      time_agreement:
+        type: string
+      tutor_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.TutorRegistration:
     properties:
       created_at:
@@ -198,6 +298,46 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.TutorSchedule:
+    properties:
+      hours:
+        type: string
+      weekdays:
+        items:
+          type: string
+        type: array
+      weekend_hours:
+        items:
+          type: string
+        type: array
+      weekends:
+        type: boolean
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      user_type:
+        type: string
+    type: object
   models.UserData:
     properties:
       email:
@@ -224,7 +364,15 @@ definitions:
     type: object
   models.VerifyUser:
     properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
       email:
+        type: string
+      id:
+        type: integer
+      updated_at:
         type: string
       verification_otp:
         type: string
@@ -241,6 +389,101 @@ info:
   title: FNGC Backend Service
   version: "1.0"
 paths:
+  /admin/examination/{profile}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all examination profiles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ExamPreparation'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Retrieves a list of all examination profile
+      tags:
+      - Hybrid APIs
+  /admin/examination/all:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all examination profiles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ExamPreparation'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Retrieves a list of all examination profile
+      tags:
+      - Hybrid APIs
+  /admin/student/abroad/all:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all abroad student data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.StudyAbroad'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Retrieves a list of all abroad application students
+      tags:
+      - Hybrid APIs
+  /admin/student/all:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all students data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Retrieves a list of all students
+      tags:
+      - Hybrid APIs
+  /admin/tutor/all:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all tutor data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Retrieves a list of all tutors
+      tags:
+      - Hybrid APIs
   /auth/login:
     post:
       consumes:
@@ -463,6 +706,33 @@ paths:
       summary: Handle apply for student examination
       tags:
       - Tutor
+  /tutor/education/:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data of User educational registration objects and returns
+        valid response
+      parameters:
+      - description: The Tutor Educational Data
+        in: body
+        name: TutorEducationalData
+        required: true
+        schema:
+          $ref: '#/definitions/models.TutorEducationalData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.TutorEducationalData'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle setting up tutor educational status
+      tags:
+      - Authorization
   /user/contactus/:
     post:
       consumes:
@@ -488,6 +758,33 @@ paths:
           schema:
             $ref: '#/definitions/models.ResponseBody'
       summary: Handle contact us request
+      tags:
+      - Hybrid APIs
+  /user/review/:
+    post:
+      consumes:
+      - application/json
+      description: Accept JSON data for customer review and message objects then returns
+        valid response
+      parameters:
+      - description: The Review Data
+        in: body
+        name: Review
+        required: true
+        schema:
+          $ref: '#/definitions/models.Review'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.Review'
+        "400":
+          description: Check Response Message
+          schema:
+            $ref: '#/definitions/models.ResponseBody'
+      summary: Handle sending customer review
       tags:
       - Hybrid APIs
   /user/studyabroad/:

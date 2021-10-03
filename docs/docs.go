@@ -31,6 +31,151 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/examination/all": {
+            "get": {
+                "description": "Retrieves all examination profiles",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Retrieves a list of all examination profile",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.ExamPreparation"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/examination/{profile}": {
+            "get": {
+                "description": "Retrieves all examination profiles",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Retrieves a list of all examination profile",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.ExamPreparation"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/student/abroad/all": {
+            "get": {
+                "description": "Retrieves all abroad student data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Retrieves a list of all abroad application students",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.StudyAbroad"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/student/all": {
+            "get": {
+                "description": "Retrieves all students data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Retrieves a list of all students",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/tutor/all": {
+            "get": {
+                "description": "Retrieves all tutor data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Retrieves a list of all tutors",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Accept JSON data of User Login objects and returns valid response",
@@ -369,6 +514,46 @@ var doc = `{
                 }
             }
         },
+        "/tutor/education/": {
+            "post": {
+                "description": "Accept JSON data of User educational registration objects and returns valid response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Handle setting up tutor educational status",
+                "parameters": [
+                    {
+                        "description": "The Tutor Educational Data",
+                        "name": "TutorEducationalData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TutorEducationalData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.TutorEducationalData"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
         "/user/contactus/": {
             "post": {
                 "description": "Accept JSON data for contact details and message objects then returns valid response",
@@ -398,6 +583,46 @@ var doc = `{
                         "description": "ok",
                         "schema": {
                             "$ref": "#/definitions/models.ContactUs"
+                        }
+                    },
+                    "400": {
+                        "description": "Check Response Message",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/review/": {
+            "post": {
+                "description": "Accept JSON data for customer review and message objects then returns valid response",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hybrid APIs"
+                ],
+                "summary": "Handle sending customer review",
+                "parameters": [
+                    {
+                        "description": "The Review Data",
+                        "name": "Review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Review"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/models.Review"
                         }
                     },
                     "400": {
@@ -494,11 +719,20 @@ var doc = `{
         "models.ContactUs": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
                 "first_name": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "last_name": {
                     "type": "string"
@@ -510,6 +744,9 @@ var doc = `{
                     "type": "string"
                 },
                 "subject": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -535,7 +772,7 @@ var doc = `{
                 "exam_profile": {
                     "type": "string"
                 },
-                "ezam_status": {
+                "exam_status": {
                     "type": "string"
                 },
                 "id": {
@@ -621,6 +858,32 @@ var doc = `{
                 }
             }
         },
+        "models.Review": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "review": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.StudentCurriculum": {
             "type": "object",
             "properties": {
@@ -647,6 +910,9 @@ var doc = `{
                 "course": {
                     "type": "string"
                 },
+                "created_at": {
+                    "type": "string"
+                },
                 "degree": {
                     "type": "string"
                 },
@@ -654,6 +920,9 @@ var doc = `{
                     "type": "string"
                 },
                 "degree_prgramme": {
+                    "type": "string"
+                },
+                "deleted_at": {
                     "type": "string"
                 },
                 "dob": {
@@ -686,6 +955,9 @@ var doc = `{
                 "high_school": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "last_name": {
                     "type": "string"
                 },
@@ -702,6 +974,9 @@ var doc = `{
                     "type": "string"
                 },
                 "university_name": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 },
                 "year_of_admission": {
@@ -749,6 +1024,108 @@ var doc = `{
                 }
             }
         },
+        "models.TutorDegree": {
+            "type": "object",
+            "properties": {
+                "college": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "degree": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "major": {
+                    "type": "string"
+                },
+                "tutor_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TutorEducationalData": {
+            "type": "object",
+            "properties": {
+                "certified_teacher": {
+                    "type": "boolean"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "educational_degree": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TutorDegree"
+                    }
+                },
+                "schedule": {
+                    "$ref": "#/definitions/models.TutorSchedule"
+                },
+                "subject_speciality": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tutor_id": {
+                    "type": "string"
+                },
+                "work_experience": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TutorEmployment"
+                    }
+                }
+            }
+        },
+        "models.TutorEmployment": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "date_of_employment": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "employer": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "job_industry": {
+                    "type": "string"
+                },
+                "job_title": {
+                    "type": "string"
+                },
+                "time_agreement": {
+                    "type": "string"
+                },
+                "tutor_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.TutorRegistration": {
             "type": "object",
             "properties": {
@@ -793,6 +1170,67 @@ var doc = `{
                 }
             }
         },
+        "models.TutorSchedule": {
+            "type": "object",
+            "properties": {
+                "hours": {
+                    "type": "string"
+                },
+                "weekdays": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "weekend_hours": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "weekends": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "user_type": {
+                    "type": "string"
+                }
+            }
+        },
         "models.UserData": {
             "type": "object",
             "properties": {
@@ -833,7 +1271,19 @@ var doc = `{
         "models.VerifyUser": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
                 "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updated_at": {
                     "type": "string"
                 },
                 "verification_otp": {

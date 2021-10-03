@@ -29,6 +29,7 @@ func SetupRouter(appPort, hostAddress string) *chi.Mux {
 	router.Mount("/auth", authRouter())
 	router.Mount("/user", userRouter())
 	router.Mount("/student", studentRouter())
+	router.Mount("/admin", adminRouter())
 
 	router.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL(hostAddress+appPort+"/swagger/doc.json"),
@@ -62,6 +63,18 @@ func studentRouter() *chi.Mux {
 
 	router.Post("/examination/", controller.ExaminationApply)
 	// router.Post()
+
+	return router
+}
+
+func adminRouter() *chi.Mux {
+	router := chi.NewRouter()
+
+	router.Get("/examination/all", controller.GetAllExaminationProfile)
+	router.Get("/examination/{profile}", controller.GetExaminationProfile)
+	router.Get("/tutor/all", controller.GetAllTutor)
+	router.Get("/student/all", controller.GetAllStudents)
+	router.Get("/student/abroad/all", controller.GetAllAbroadStudies)
 
 	return router
 }

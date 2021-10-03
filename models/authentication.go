@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"log"
 	"os"
 	"time"
 
@@ -133,11 +132,10 @@ func (user *User) VerifyOTP(otpBody VerifyUser) error {
 	}
 	db.Delete(&otpBody)
 	if err := db.Where("email = ?", otpBody.Email).Find(&user).Error; err != nil {
-		errM := errors.New("error finding user obejct")
+		errM := errors.New("error finding user object")
 		LogError(errM)
 		return errM
 	}
-	log.Println(user)
 	if user.Email == "" {
 		LogError(errors.New("error getting user data when updating"))
 		return errors.New("error getting user data when updating")

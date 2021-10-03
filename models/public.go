@@ -86,7 +86,7 @@ func (study *StudyAbroad) validateData() error {
 	return nil
 }
 
-func (contactData *ContactUs) HandleContactUs() error {
+func (contactData ContactUs) HandleContactUs() error {
 	if err := contactData.validateData(); err != nil {
 		LogError(err)
 		return err
@@ -100,7 +100,7 @@ func (contactData *ContactUs) HandleContactUs() error {
 	return nil
 }
 
-func (contactData *ContactUs) validateData() error {
+func (contactData ContactUs) validateData() error {
 	if contactData.FirstName == "" || contactData.LastName == "" {
 		return errors.New("user first name and last name cannot be empty")
 	}
@@ -111,6 +111,36 @@ func (contactData *ContactUs) validateData() error {
 
 	if contactData.Subject == "" || contactData.Message == "" {
 		return errors.New("user subject and message cannot be empty")
+	}
+
+	return nil
+}
+
+func (reviewData Review) HandleReview() error {
+	if err := reviewData.validateData(); err != nil {
+		LogError(err)
+		return err
+	}
+
+	if err := db.Create(&reviewData).Error; err != nil {
+		LogError(err)
+		return errors.New("error creating new review data")
+	}
+
+	return nil
+}
+
+func (reviewData Review) validateData() error {
+	if reviewData.FullName == ""{
+		return errors.New("user full name cannot be empty")
+	}
+
+	if reviewData.Avatar == "" {
+		return errors.New("user avatar cannot be empty")
+	}
+
+	if reviewData.Review == "" {
+		return errors.New("user review is empty")
 	}
 
 	return nil

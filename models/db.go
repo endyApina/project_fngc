@@ -43,6 +43,8 @@ func autoMigrateTables() {
 	db.AutoMigrate(&StudyAbroad{})
 	db.AutoMigrate(&LoginHistory{})
 	db.AutoMigrate(&VerifyUser{})
+	db.AutoMigrate(&ContactUs{})
+	db.AutoMigrate(&Review{})
 }
 
 func getDatabaseCredentials() (string, string, string, string, error) {

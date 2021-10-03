@@ -96,11 +96,13 @@ func ContactUs(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
+			return
 		} else {
 			models.LogError(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+			return
 		}
 	} //decode json request into user object
 
@@ -108,6 +110,7 @@ func ContactUs(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, err.Error(), "error"))
+		return
 	}
 
 	if err = mailer.SendContactUs(contact); err != nil {
@@ -117,6 +120,49 @@ func ContactUs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, contact, "success"))
+}
+
+//ContactUs godoc
+//@Summary Handle sending customer review
+//@Description Accept JSON data for customer review and message objects then returns valid response
+//@Accept json
+//@produce json
+//@Tags Hybrid APIs
+//@Param   Review      body models.Review true  "The Review Data"
+//@Success 200 {object} models.Review	"ok"
+//@Failure 400 {object} models.ResponseBody "Check Response Message"
+//@Router /user/review/ [post]
+func SendReview(w http.ResponseWriter, r *http.Request) {
+	var reviewData models.Review
+
+	err := decodeJSONBody(w, r, &reviewData)
+	if err != nil {
+		var mr *malformedRequest
+		if errors.As(err, &mr) {
+			models.LogError(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
+			return
+		} else {
+			models.LogError(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusCreated)
+			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+			return
+		}
+	} //decode json request into user object
+
+	if err = reviewData.HandleReview(); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, err.Error(), "error"))
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, reviewData, "success"))
 }
 
 type malformedRequest struct {

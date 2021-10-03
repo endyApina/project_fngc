@@ -33,11 +33,13 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
+			return 
 		} else {
 			models.LogError(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
+			return 
 		}
 	} //decode json request into user object
 
@@ -46,10 +48,12 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error registering new user"))
+		return 
 	} //business logic to register a new user
 
 	if err = mailer.SendRegistrationMail(registrationData); err != nil {
 		models.LogError(err)
+		return 
 	} //send mail notification
 
 	w.Header().Set("Content-Type", "application/json")

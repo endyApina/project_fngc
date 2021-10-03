@@ -71,9 +71,9 @@ func SendNewTutorMail(regData models.User) error {
 
 
 func SendExamPrepMail(user models.User) error {
-	templatePath := os.Getenv("template_path") + "registration.html"
+	templatePath := os.Getenv("template_path") + "examination.html"
 
-	var mailBody *regMailData
+	var mailBody regMailData
 	mailBody.Email = user.Email
 	mailBody.FullName = user.FullName
 
@@ -82,13 +82,19 @@ func SendExamPrepMail(user models.User) error {
 	newRequestData := NewRequest(mailBody.Email, mailSubject)
 	go newRequestData.AppSendMail(templatePath, mailBody)
 
+	adminMail := os.Getenv("mail_subject_prefix") + "New Exam Preparation"
+	adminRequestData := NewRequest(os.Getenv("admin_email"), adminMail)
+	adminPath := os.Getenv("template_path") + "admin-exam.html"
+
+	go adminRequestData.AppSendMail(adminPath, mailBody)
+
 	return nil
 }
 
 func SendStudyAbroad(user models.StudyAbroad) error {
 	templatePath := os.Getenv("template_path") + "abroad.html"
 
-	var mailBody *regMailData
+	var mailBody regMailData
 	mailBody.Email = user.Email
 	mailBody.FullName = user.FirstName
 
@@ -104,7 +110,7 @@ func SendContactUs(user models.ContactUs) error {
 	templatePath := os.Getenv("template_path") + "contact.html"
 	_ = godotenv.Load("conf.env")
 
-	var mailBody *regMailData
+	var mailBody regMailData
 	mailBody.Email = user.Email
 	mailBody.FullName = user.FirstName + " " + user.LastName
 	mailBody.Message = user.Message

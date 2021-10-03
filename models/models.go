@@ -70,7 +70,7 @@ type ExamPreparation struct {
 	ExamID          string `json:"exam_id"`
 	StudentID       string `json:"student_id"` //logged in user unique id
 	ExamCost        string `json:"exam_cost"`
-	ExamStatus      string `json:"ezam_status"`
+	ExamStatus      string `json:"exam_status"`
 }
 
 type Exam struct {
@@ -149,6 +149,7 @@ type LoggedInData struct {
 }
 
 type ContactUs struct {
+	DefaultModel
 	FirstName   string `json:"first_name"`
 	LastName    string `json:"last_name"`
 	PhoneNumber string `json:"phone_number"`
@@ -212,4 +213,11 @@ type TutorEmployment struct {
 	DateOfEmployment string `json:"date_of_employment"`
 	JobIndustry      string `json:"job_industry"`
 	TutorID          string `json:"tutor_id"`
+}
+
+type Review struct {
+	DefaultModel
+	FullName string `json:"full_name"`
+	Avatar   string `json:"avatar"`
+	Review   string `json:"review"`
 }
