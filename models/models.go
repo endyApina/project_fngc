@@ -171,12 +171,21 @@ type TutorRegistration struct {
 }
 
 type TutorEducationalData struct {
-	EducationalDegree []TutorDegree   `json:"educational_degree"`
-	CertifiedTeacher  bool            `json:"certified_teacher"`
-	Country           string          `json:"country"`
-	WorkExperience    TutorEmployment `json:"work_experience"`
-	Schedule          TutorSchedule   `json:"schedule"`
-	SubjectSpeciality []string        `json:"subject_speciality"`
+	EducationalDegree []TutorDegree     `json:"educational_degree"`
+	CertifiedTeacher  bool              `json:"certified_teacher"`
+	Country           string            `json:"country"`
+	WorkExperience    []TutorEmployment `json:"work_experience"`
+	Schedule          TutorSchedule     `json:"schedule"`
+	SubjectSpeciality []string          `json:"subject_speciality"`
+	TutorID           string            `json:"tutor_id"`
+}
+
+type TutorEducation struct {
+	DefaultModel
+	TutorID           string   `json:"tutor_id"`
+	CertifiedTeacher  bool     `json:"certified_teacher"`
+	Country           string   `json:"country"`
+	SubjectSpeciality []string `json:"subject_speciality"`
 }
 
 type TutorSchedule struct {
@@ -202,4 +211,5 @@ type TutorEmployment struct {
 	TimeAgreement    string `json:"time_agreement"`
 	DateOfEmployment string `json:"date_of_employment"`
 	JobIndustry      string `json:"job_industry"`
+	TutorID          string `json:"tutor_id"`
 }

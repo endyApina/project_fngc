@@ -54,6 +54,22 @@ func SendVerifiedMail(regData models.User) error {
 	return nil
 }
 
+func SendNewTutorMail(regData models.User) error {
+	templatePath := os.Getenv("template_path") + "tutor.html"
+
+	var mailBody regMailData
+	mailBody.Email = regData.Email
+	mailBody.FullName = regData.FullName
+
+	// _ = godotenv.Load("conf.env")
+	mailSubject := os.Getenv("mail_subject_prefix") + "New Tutor Education details"
+	newRequestData := NewRequest(mailBody.Email, mailSubject)
+	go newRequestData.AppSendMail(templatePath, mailBody)
+
+	return nil
+}
+
+
 func SendExamPrepMail(user models.User) error {
 	templatePath := os.Getenv("template_path") + "registration.html"
 

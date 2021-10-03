@@ -73,7 +73,7 @@ func (regData *User) verifyStatus() error {
 	return errors.New("invalid user type")
 }
 
-func (user User) Login(loginData LoginData) error {
+func (user *User) Login(loginData LoginData) error {
 	_ = godotenv.Load("conf.env")
 	if loginData.Email == "" {
 		return errors.New("empty email string")
