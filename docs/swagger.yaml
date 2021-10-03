@@ -407,7 +407,7 @@ paths:
             $ref: '#/definitions/models.ResponseBody'
       summary: Retrieves a list of all examination profile
       tags:
-      - Hybrid APIs
+      - Admin
   /admin/examination/all:
     get:
       consumes:
@@ -426,7 +426,7 @@ paths:
             $ref: '#/definitions/models.ResponseBody'
       summary: Retrieves a list of all examination profile
       tags:
-      - Hybrid APIs
+      - Admin
   /admin/student/abroad/all:
     get:
       consumes:
@@ -445,7 +445,7 @@ paths:
             $ref: '#/definitions/models.ResponseBody'
       summary: Retrieves a list of all abroad application students
       tags:
-      - Hybrid APIs
+      - Admin
   /admin/student/all:
     get:
       consumes:
@@ -464,7 +464,7 @@ paths:
             $ref: '#/definitions/models.ResponseBody'
       summary: Retrieves a list of all students
       tags:
-      - Hybrid APIs
+      - Admin
   /admin/tutor/all:
     get:
       consumes:
@@ -483,7 +483,7 @@ paths:
             $ref: '#/definitions/models.ResponseBody'
       summary: Retrieves a list of all tutors
       tags:
-      - Hybrid APIs
+      - Admin
   /auth/login:
     post:
       consumes:

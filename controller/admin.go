@@ -15,7 +15,7 @@ import (
 //@Description Retrieves all examination profiles
 //@Accept json
 //@produce json
-//@Tags Hybrid APIs
+//@Tags Admin
 //@Success 200 {object} models.ExamPreparation	"ok"
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /admin/examination/all [get]
@@ -40,7 +40,7 @@ func GetAllExaminationProfile(w http.ResponseWriter, r *http.Request) {
 //@Description Retrieves all examination profiles
 //@Accept json
 //@produce json
-//@Tags Hybrid APIs
+//@Tags Admin
 //@Success 200 {object} models.ExamPreparation	"ok"
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /admin/examination/{profile} [get]
@@ -66,7 +66,7 @@ func GetExaminationProfile(w http.ResponseWriter, r *http.Request) {
 //@Description Retrieves all tutor data
 //@Accept json
 //@produce json
-//@Tags Hybrid APIs
+//@Tags Admin
 //@Success 200 {object} models.User	"ok"
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /admin/tutor/all [get]
@@ -93,7 +93,7 @@ func GetAllTutor(w http.ResponseWriter, r *http.Request) {
 //@Description Retrieves all students data
 //@Accept json
 //@produce json
-//@Tags Hybrid APIs
+//@Tags Admin
 //@Success 200 {object} models.User	"ok"
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /admin/student/all [get]
@@ -120,7 +120,7 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 //@Description Retrieves all abroad student data
 //@Accept json
 //@produce json
-//@Tags Hybrid APIs
+//@Tags Admin
 //@Success 200 {object} models.StudyAbroad	"ok"
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /admin/student/abroad/all [get]

@@ -41,7 +41,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Hybrid APIs"
+                    "Admin"
                 ],
                 "summary": "Retrieves a list of all examination profile",
                 "responses": {
@@ -70,7 +70,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Hybrid APIs"
+                    "Admin"
                 ],
                 "summary": "Retrieves a list of all examination profile",
                 "responses": {
@@ -99,7 +99,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Hybrid APIs"
+                    "Admin"
                 ],
                 "summary": "Retrieves a list of all abroad application students",
                 "responses": {
@@ -128,7 +128,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Hybrid APIs"
+                    "Admin"
                 ],
                 "summary": "Retrieves a list of all students",
                 "responses": {
@@ -157,7 +157,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Hybrid APIs"
+                    "Admin"
                 ],
                 "summary": "Retrieves a list of all tutors",
                 "responses": {
