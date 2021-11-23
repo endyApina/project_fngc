@@ -31,6 +31,9 @@ func main() {
 
 	appPort := os.Getenv("port")
 	hostAddress := os.Getenv("host_address")
+	if os.Getenv("app_mode") == "prod" {
+		hostAddress = os.Getenv("prod_host_address")
+	}
 	log.Println("App running on " + hostAddress + appPort)
 
 	r := routes.SetupRouter(appPort, hostAddress)
