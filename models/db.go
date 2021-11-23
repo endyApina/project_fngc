@@ -55,6 +55,11 @@ func getDatabaseCredentials() (string, string, string, string, error) {
 	dbName := os.Getenv("db_name")
 	dbHost := os.Getenv("db_host")
 
+	if os.Getenv("app_mode") == "prod" {
+		username = os.Getenv("prod_db_user")
+		password = os.Getenv("prod_db_pass")
+	}
+
 	return username, password, dbName, dbHost, nil
 
 }
