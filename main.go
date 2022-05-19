@@ -11,9 +11,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// @title FNGC Backend Service
+// @title Swift medics Backend API Service
 // @version 1.0
-// @description This is official backend documentation for the fngc software
+// @description This is official backend documentation for the swift medics backend system
 
 // @contact.name Endy Apinageri
 // @contact.email apinaendy@gmail.com

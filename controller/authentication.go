@@ -14,11 +14,11 @@ import (
 
 //Registration godoc
 //@Summary Handle unique User Registration
-//@Description Accept JSON data of Student User objects and returns valid response
+//@Description Accept JSON data of User objects and returns valid response
 //@Accept json
 //@produce json
 //@Tags Authorization
-//@Param   StudentData      body models.UserRegistrationData true  "The Student Registration Data"
+//@Param   UserData      body models.UserRegistrationData true  "The User Registration Data"
 //@Success 200 {object} models.UserRegistrationData	"ok"
 //@Failure 400 {object} models.ResponseBody "Check Response Message"
 //@Router /auth/signup [post]
@@ -33,13 +33,13 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "error passing json data. contact support", "error"))
-			return 
+			return
 		} else {
 			models.LogError(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			json.NewEncoder(w).Encode(models.ValidResponse(http.StatusInternalServerError, "internal server error", "error"))
-			return 
+			return
 		}
 	} //decode json request into user object
 
@@ -48,12 +48,12 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(models.ValidResponse(http.StatusOK, err.Error(), "error registering new user"))
-		return 
+		return
 	} //business logic to register a new user
 
 	if err = mailer.SendRegistrationMail(registrationData); err != nil {
 		models.LogError(err)
-		return 
+		return
 	} //send mail notification
 
 	w.Header().Set("Content-Type", "application/json")
@@ -199,16 +199,6 @@ func ResetPassword(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//TutorRegistration godoc
-//@Summary Handle unique Tutor Registration
-//@Description Accept JSON data of Tutor Unique objects and returns valid response
-//@Accept json
-//@produce json
-//@Tags Authorization
-//@Param   TutorRegistration      body models.TutorRegistration true  "The Tutor Registration Data"
-//@Success 200 {object} models.TutorRegistration	"ok"
-//@Failure 400 {object} models.ResponseBody "Check Response Message"
-//@Router /auth/tutor/signup [post]
 func TutorRegistration(w http.ResponseWriter, r *http.Request) {
 	_ = godotenv.Load("conf.env")
 	var tutorData models.TutorRegistration
