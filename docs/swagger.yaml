@@ -25,35 +25,6 @@ definitions:
       message:
         type: string
     type: object
-  models.TutorRegistration:
-    properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      email:
-        type: string
-      first_name:
-        type: string
-      id:
-        type: integer
-      last_name:
-        type: string
-      nigerian_resident:
-        type: boolean
-      password:
-        type: string
-      residence:
-        type: string
-      state_of_residence:
-        type: string
-      tutor_id:
-        type: string
-      tutor_type:
-        type: string
-      updated_at:
-        type: string
-    type: object
   models.UserRegistrationData:
     properties:
       address:
@@ -87,11 +58,12 @@ info:
   contact:
     email: apinaendy@gmail.com
     name: Endy Apinageri
-  description: This is official backend documentation for the fngc software
+  description: This is official backend documentation for the swift medics backend
+    system
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: FNGC Backend Service
+  title: Swift medics Backend API Service
   version: "1.0"
 paths:
   /auth/login:
@@ -151,11 +123,11 @@ paths:
     post:
       consumes:
       - application/json
-      description: Accept JSON data of Student User objects and returns valid response
+      description: Accept JSON data of User objects and returns valid response
       parameters:
-      - description: The Student Registration Data
+      - description: The User Registration Data
         in: body
-        name: StudentData
+        name: UserData
         required: true
         schema:
           $ref: '#/definitions/models.UserRegistrationData'
@@ -171,32 +143,6 @@ paths:
           schema:
             $ref: '#/definitions/models.ResponseBody'
       summary: Handle unique User Registration
-      tags:
-      - Authorization
-  /auth/tutor/signup:
-    post:
-      consumes:
-      - application/json
-      description: Accept JSON data of Tutor Unique objects and returns valid response
-      parameters:
-      - description: The Tutor Registration Data
-        in: body
-        name: TutorRegistration
-        required: true
-        schema:
-          $ref: '#/definitions/models.TutorRegistration'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            $ref: '#/definitions/models.TutorRegistration'
-        "400":
-          description: Check Response Message
-          schema:
-            $ref: '#/definitions/models.ResponseBody'
-      summary: Handle unique Tutor Registration
       tags:
       - Authorization
   /auth/verifyotp:

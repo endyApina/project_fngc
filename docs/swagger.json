@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is official backend documentation for the fngc software",
-        "title": "FNGC Backend Service",
+        "description": "This is official backend documentation for the swift medics backend system",
+        "title": "Swift medics Backend API Service",
         "contact": {
             "name": "Endy Apinageri",
             "email": "apinaendy@gmail.com"
@@ -98,7 +98,7 @@
         },
         "/auth/signup": {
             "post": {
-                "description": "Accept JSON data of Student User objects and returns valid response",
+                "description": "Accept JSON data of User objects and returns valid response",
                 "consumes": [
                     "application/json"
                 ],
@@ -111,8 +111,8 @@
                 "summary": "Handle unique User Registration",
                 "parameters": [
                     {
-                        "description": "The Student Registration Data",
-                        "name": "StudentData",
+                        "description": "The User Registration Data",
+                        "name": "UserData",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -125,46 +125,6 @@
                         "description": "ok",
                         "schema": {
                             "$ref": "#/definitions/models.UserRegistrationData"
-                        }
-                    },
-                    "400": {
-                        "description": "Check Response Message",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseBody"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/tutor/signup": {
-            "post": {
-                "description": "Accept JSON data of Tutor Unique objects and returns valid response",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authorization"
-                ],
-                "summary": "Handle unique Tutor Registration",
-                "parameters": [
-                    {
-                        "description": "The Tutor Registration Data",
-                        "name": "TutorRegistration",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.TutorRegistration"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "ok",
-                        "schema": {
-                            "$ref": "#/definitions/models.TutorRegistration"
                         }
                     },
                     "400": {
@@ -253,50 +213,6 @@
                     "type": "integer"
                 },
                 "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.TutorRegistration": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "nigerian_resident": {
-                    "type": "boolean"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "residence": {
-                    "type": "string"
-                },
-                "state_of_residence": {
-                    "type": "string"
-                },
-                "tutor_id": {
-                    "type": "string"
-                },
-                "tutor_type": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }

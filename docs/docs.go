@@ -113,7 +113,7 @@ var doc = `{
         },
         "/auth/signup": {
             "post": {
-                "description": "Accept JSON data of Student User objects and returns valid response",
+                "description": "Accept JSON data of User objects and returns valid response",
                 "consumes": [
                     "application/json"
                 ],
@@ -126,8 +126,8 @@ var doc = `{
                 "summary": "Handle unique User Registration",
                 "parameters": [
                     {
-                        "description": "The Student Registration Data",
-                        "name": "StudentData",
+                        "description": "The User Registration Data",
+                        "name": "UserData",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -140,46 +140,6 @@ var doc = `{
                         "description": "ok",
                         "schema": {
                             "$ref": "#/definitions/models.UserRegistrationData"
-                        }
-                    },
-                    "400": {
-                        "description": "Check Response Message",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponseBody"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/tutor/signup": {
-            "post": {
-                "description": "Accept JSON data of Tutor Unique objects and returns valid response",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authorization"
-                ],
-                "summary": "Handle unique Tutor Registration",
-                "parameters": [
-                    {
-                        "description": "The Tutor Registration Data",
-                        "name": "TutorRegistration",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.TutorRegistration"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "ok",
-                        "schema": {
-                            "$ref": "#/definitions/models.TutorRegistration"
                         }
                     },
                     "400": {
@@ -272,50 +232,6 @@ var doc = `{
                 }
             }
         },
-        "models.TutorRegistration": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "deleted_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "nigerian_resident": {
-                    "type": "boolean"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "residence": {
-                    "type": "string"
-                },
-                "state_of_residence": {
-                    "type": "string"
-                },
-                "tutor_id": {
-                    "type": "string"
-                },
-                "tutor_type": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
         "models.UserRegistrationData": {
             "type": "object",
             "properties": {
@@ -377,8 +293,8 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "petstore.swagger.io",
 	BasePath:    "/v1",
 	Schemes:     []string{},
-	Title:       "FNGC Backend Service",
-	Description: "This is official backend documentation for the fngc software",
+	Title:       "Swift medics Backend API Service",
+	Description: "This is official backend documentation for the swift medics backend system",
 }
 
 type s struct{}
