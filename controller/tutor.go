@@ -8,29 +8,10 @@ import (
 	"net/http"
 )
 
-//ExaminationApply godoc
-//@Summary Handle apply for student examination
-//@Description Accept JSON data for examination objects and returns valid response
-//@Accept json
-//@produce json
-//@Tags Tutor
-//@Success 200 {object} models.TutorDashboard	"ok"
-//@Failure 400 {object} models.ResponseBody "Check Response Message"
-//@Router /tutor/dashboard/ [get]
 func TutorDashboard(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//TotorEducationSetting godoc
-//@Summary Handle setting up tutor educational status
-//@Description Accept JSON data of User educational registration objects and returns valid response
-//@Accept json
-//@produce json
-//@Tags Authorization
-//@Param   TutorEducationalData      body models.TutorEducationalData true  "The Tutor Educational Data"
-//@Success 200 {object} models.TutorEducationalData	"ok"
-//@Failure 400 {object} models.ResponseBody "Check Response Message"
-//@Router /tutor/education/ [post]
 func TutorEducationSetting(w http.ResponseWriter, r *http.Request) {
 	var edData models.TutorEducationalData
 	err := decodeJSONBody(w, r, &edData)
